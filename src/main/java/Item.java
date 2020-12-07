@@ -11,7 +11,7 @@ public class Item {
         return name;
     }
     public int getPrice() {
-        throw new UnsupportedOperationException();
+        return price;
     }
     @Override
     public String toString(){

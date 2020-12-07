@@ -63,7 +63,11 @@ public class Restaurant {
     }
 
     public int getTotalPrice(ArrayList<String> itemNames) {
-        throw new UnsupportedOperationException();
+        int totalPrice = 0;
+        for(String itemName : itemNames) {
+            totalPrice += findItemByName(itemName).getPrice();
+        }
+        return totalPrice;
     }
 
 }
