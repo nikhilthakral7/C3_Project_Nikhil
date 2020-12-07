@@ -5,6 +5,7 @@ import org.mockito.stubbing.Answer;
 
 import java.time.Clock;
 import java.time.LocalTime;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -12,6 +13,7 @@ class RestaurantTest {
     Restaurant restaurant;
     LocalTime openingTime;
     LocalTime closingTime;
+    ArrayList<String> selectedItems;
 
     @BeforeEach
     public void arrange() {
@@ -20,6 +22,7 @@ class RestaurantTest {
         this.restaurant = new Restaurant("Amelie's cafe","Chennai", openingTime, closingTime);
         this.restaurant.addToMenu("Sweet corn soup",119);
         this.restaurant.addToMenu("Vegetable lasagne", 269);
+        this.selectedItems = new ArrayList<String>();
     }
 
     //>>>>>>>>>>>>>>>>>>>>>>>>>OPEN/CLOSED<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -59,4 +62,24 @@ class RestaurantTest {
         assertThrows(itemNotFoundException.class, ()->restaurant.removeFromMenu("French fries"));
     }
     //<<<<<<<<<<<<<<<<<<<<<<<MENU>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+    //>>>>>>>>>>>>>>>>>>>>>>>>>>>ORDER<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    @Test
+    public void price_when_no_items_selected_should_be_zero(){
+        assertEquals(restaurant.getTotalPrice(selectedItems), 0);
+    }
+
+    @Test
+    public void price_when_one_item_selected_should_return_price_of_item(){
+        selectedItems.add(restaurant.getMenu().get(0).getName());
+        assertEquals(restaurant.getTotalPrice(selectedItems), restaurant.getMenu().get(0).getPrice());
+    }
+
+    @Test
+    public void price_when_multiple_items_selected_should_return_sum_of_price_of_item(){
+        selectedItems.add(restaurant.getMenu().get(0).getName());
+        selectedItems.add(restaurant.getMenu().get(1).getName());
+        assertEquals(restaurant.getTotalPrice(selectedItems), restaurant.getMenu().get(0).getPrice() + restaurant.getMenu().get(1).getPrice());
+    }
+    //<<<<<<<<<<<<<<<<<<<<<<<<<<<ORDER>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 }
